@@ -64,6 +64,23 @@ class App extends Component {
       .catch(err => console.log(err))
   }
 
+  handleLogOut = () => {
+    this.setState({
+      isAuthenticated : false,
+      employees : []
+    })
+    localStorage.removeItem('token')
+  }
+
+  componentDidMount = () => {
+    if (localStorage.token) {
+      this.setState({
+        isAuthenticated : true
+      })
+    }
+  }
+
+
   render() {
     return (
       <div>
@@ -73,14 +90,16 @@ class App extends Component {
           <h1> Your are authenticated</h1>
         ) : (<h1> you are not authenticated</h1>)}
         <button onClick={this.getEmployeesData}> get employees data</button>
-        {this.state.employees.length > 0 && 
+        {this.state.employees && 
           this.state.employees.map((data, index) =>
           (<EmployeesDetail
             key = {index}
             emp_no = {data.emp_no}
             first_name = {data.first_name}
             last_name = {data.last_name}
-            />))}       
+            />))}
+        <h1>Log out </h1>
+        <button onClick= {() =>this.handleLogOut()}> log out </button>       
       </div>
     );
   }
